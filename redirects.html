@@ -29,6 +29,7 @@
         let key = "Passphrase";
         let url = new URL(href);
         let splitParam = url.search.split("?").pop;
+        console.log(splitParam);
 
         let originalParam = decrypt(splitParam, "Passphrase");
 
