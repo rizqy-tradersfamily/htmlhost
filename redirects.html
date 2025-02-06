@@ -19,7 +19,9 @@
         }
 
         function decrypt(text, key){
-        return String.fromCharCode(...text.match(/.{1,2}/g)
+            let texts = String(text);
+            console.log(texts);
+        return String.fromCharCode(...texts.match(/.{1,2}/g)
             .map((e,i) => 
             parseInt(e, 16) ^ key.charCodeAt(i % key.length) % 255)
             )
