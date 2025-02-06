@@ -33,6 +33,7 @@
         let splitParam = url.search.split("?").pop;
 
         let originalParam = decrypt(splitParam, "Passphrase");
+        console.log(originalParam);
 
         const os = getMobileOS();
         if (os === "Android") {

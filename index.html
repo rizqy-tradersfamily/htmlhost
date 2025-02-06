@@ -33,8 +33,21 @@
                 .padStart(2,"0")
             ).join('')
             }
+
+            function decrypt(text, key){
+                let texts = String(text);
+                console.log(texts);
+            return String.fromCharCode(...texts.match(/.{1,2}/g)
+                .map((e,i) => 
+                parseInt(e, 16) ^ key.charCodeAt(i % key.length) % 255)
+                )
+            }
     
             let enc = encrypt(param, "Passphrase");
+            let dec = decrypt(enc, "Passphrase");
+            console.log(enc);
+            console.log(dec);
+            console.log(param);
 
             let url = `https://deeptestingmore.netlify.app/redirects.html?${enc}`;
 
