@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Deep Link</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-sky-100 flex items-center justify-center min-h-screen">
+
+    <div class="bg-white p-8 rounded-lg shadow-md w-96">
+        <h2 class="text-2xl font-bold mb-6 text-center">Generate Deep Link</h2>
+        <form id="myform">
+            <div class="mb-4">
+                <label class="block text-gray-700" for="name">URL</label>
+                <input class="mt-1 block w-full p-2 border border-gray-300 rounded" type="text" id="url" placeholder="Masukan url buat di generate" required>
+            </div>
+            <input class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600" type="submit" id="submit">
+        </form>
+
+        <div id="result" class="mt-4 text-center text-gray-700">
+
+        </div>
+    </div>
+    <script>
+        document.getElementById('myform').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const param = document.getElementById('url').value;
+            function encrypt(text, key){
+                return [...text].map((x, i) => 
+                (x.codePointAt() ^ key.charCodeAt(i % key.length) % 255)
+                .toString(16)
+                .padStart(2,"0")
+            ).join('')
+            }
+    
+            let enc = encrypt(param, "Passphrase");
+
+            let url = `https://rizqy-tradersfamily.github.io/redirects.html?url=${enc}`;
+
+            const resultDiv = document.getElementById('result');
+
+            resultDiv.innerHTML = `
+                <p class="text-black-500">Generated Link:</p>
+                <a href="${url}" class="text-blue-500 underline">${url}</a>
+            `;
+        });
+
+    </script>
+</body>
+</html>

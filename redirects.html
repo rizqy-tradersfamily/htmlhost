@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirect Now</title>
+</head>
+<body>
+    <script>
+        const getMobileOS = () => {
+            const ua = navigator.userAgent
+            if (/android/i.test(ua)) {
+                return "Android";
+            }
+            else if (/iPad|iPhone|iPod/.test(ua)){
+                return "iOS";
+            }
+            return "Other";
+        }
+
+        function decrypt(text, key){
+        return String.fromCharCode(...text.match(/.{1,2}/g)
+            .map((e,i) => 
+            parseInt(e, 16) ^ key.charCodeAt(i % key.length) % 255)
+            )
+        }
+
+        let href = window.location.href;
+        let key = "Passphrase";
+        let url = new URL(href);
+        let splitParam = url.search.split("?").pop;
+
+        let originalParam = decrypt(splitParam, key);
+
+        const os = getMobileOS();
+        if (os === "Android") {
+            setTimeout(() => {
+                window.location.href = "https://play.google.com/store/apps/details?id=com.tradersfamily.app&" + originalParam;
+            }, 25);
+            window.location.href = 'https://rizqy-tradersfamily.github.io?' + originalParam;
+        } else if (os === "iOS") {
+            setTimeout(() => {
+                window.location.href = "https://apps.apple.com/app/id1519985210?ct=tf_app&mt=8&pt=120054583";
+            }, 25);
+            window.location.href = 'https://rizqy-tradersfamily.github.io?' + originalParam;
+        } else {
+            window.location.href = 'https://account.tradersfamily.id';
+        }
+    </script>
+</body>
+</html>
