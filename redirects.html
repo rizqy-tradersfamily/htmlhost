@@ -19,7 +19,9 @@
         }
 
         function decrypt(text, key){
-        return String.fromCharCode(...text.match(/.{1,2}/g)
+            let texts = String(text);
+            console.log(texts);
+        return String.fromCharCode(...texts.match(/.{1,2}/g)
             .map((e,i) => 
             parseInt(e, 16) ^ key.charCodeAt(i % key.length) % 255)
             )
@@ -29,7 +31,6 @@
         let key = "Passphrase";
         let url = new URL(href);
         let splitParam = url.search.split("?").pop;
-        console.log(splitParam);
 
         let originalParam = decrypt(splitParam, "Passphrase");
 
