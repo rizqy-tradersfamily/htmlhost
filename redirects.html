@@ -39,7 +39,7 @@
         const os = getMobileOS();
         if (os === "Android") {
             setTimeout(() => {
-                window.location.href = "https://play.google.com/store/apps/details?id=com.tradersfamily.app&" + originalParam;
+                window.location.href = "https://play.google.com/store/apps/details?id=com.tradersfamily.app&referrer=" + originalParam;
             }, 25);
             window.location.href = 'https://rizqy-tradersfamily.github.io?' + originalParam;
         } else if (os === "iOS") {
