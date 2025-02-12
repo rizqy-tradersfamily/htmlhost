@@ -29,11 +29,12 @@
             function shortenUrl(originalUrl, passphrase) {
                 const url = new URL(originalUrl);
                 const urlOnly = url.origin;
+                let splitParam = url.search.split("?").pop();
                 const param = url.pathname.startsWith('/')
                     ? url.pathname.slice(1)
                     : url.pathname;
                 console.log(param);
-                const encodedParam = encodeParam(param, passphrase);
+                const encodedParam = encodeParam(splitParam, passphrase);
                 return "https://deeptestingmore.netlify.app/redirects.html?" + encodedParam;
             }
 
