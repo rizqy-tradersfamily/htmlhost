@@ -42,7 +42,8 @@
       // const url = new URL(href);
       const fallback = "http://account.tradersfamily.id/";
       const directLink = "https://staging.tradersfamily.id/";
-      const decodedParam = decodeParam(href, "secureKey"); // Decrypt parameter nya agar bisa digunakan di deep link
+      const passphrase = "secureKey";
+      const decodedParam = decodeParam(href, passphrase); // Decrypt parameter nya agar bisa digunakan di deep link
       const fallbackAndroid = `https://play.google.com/store/apps/details?id=com.tradersfamily.app&referrer=${decodedParam}`;
       const fallbackIos = `itms-apps://itunes.apple.com/app/apple-store/id1519985210?mt=8`;
 
