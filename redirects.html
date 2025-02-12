@@ -89,6 +89,7 @@
         const base64Encoded = splitParam.replace(/-/g, '+').replace(/_/g, '/'); // Convert back to Base64
         const encrypted = atob(base64Encoded); // Decode from Base64
         const decrypted = decryptWithPassphrase(encrypted, passphrase); // Decrypt with passphrase
+        console.log(decrypted);
         return decrypted;
       }
 
