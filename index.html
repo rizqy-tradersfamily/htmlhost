@@ -26,30 +26,37 @@
         document.getElementById('myform').addEventListener('submit', function(e) {
             e.preventDefault();
             const param = document.getElementById('url').value;
-            // function encrypt(text, key){
-            //     return [...text].map((x, i) => 
-            //     (x.codePointAt() ^ key.charCodeAt(i % key.length) % 255)
-            //     .toString(16)
-            //     .padStart(2,"0")
-            // ).join('')
-            // }
+            function shortenUrl(originalUrl, passphrase) {
+                const url = new URL(originalUrl);
+                const urlOnly = url.origin;
+                const param = url.pathname.startsWith('/')
+                    ? url.pathname.slice(1)
+                    : url.pathname;
+                console.log(param);
+                const encodedParam = encodeParam(param, passphrase);
+                return urlOnly + "/" + encodedParam;
+            }
 
-            // function decrypt(text, key){
-            //     let texts = String(text);
-            //     console.log(texts);
-            // return String.fromCharCode(...texts.match(/.{1,2}/g)
-            //     .map((e,i) => 
-            //     parseInt(e, 16) ^ key.charCodeAt(i % key.length) % 255)
-            //     )
-            // }
-    
-            // let enc = encrypt(param, "Passphrase");
-            // let dec = decrypt(enc, "Passphrase");
-            // console.log(enc);
-            // console.log(dec);
-            // console.log(param);
+            function encodeParam(param, passphrase) {
+                const encrypted = encryptWithPassphrase(param, passphrase); // Encrypt with passphrase
+                const base64Encoded = btoa(encrypted); // Convert to Base64
+                return base64Encoded
+                    .replace(/\+/g, '-')
+                    .replace(/\//g, '_')
+                    .replace(/=+$/, ''); // Make URL-safe
+                }
 
-            let url = `https://deeptestingmore.netlify.app/redirects.html?${enc}`;
+                function encryptWithPassphrase(input, passphrase) {
+                let encrypted = '';
+                for (let i = 0; i < input.length; i++) {
+                    const charCode =
+                    input.charCodeAt(i) ^ passphrase.charCodeAt(i % passphrase.length);
+                    encrypted += String.fromCharCode(charCode);
+                }
+                return encrypted;
+                }
+
+            let url = shortenUrl(`https://deeptestingmore.netlify.app/${param}`);
 
             const resultDiv = document.getElementById('result');
 
