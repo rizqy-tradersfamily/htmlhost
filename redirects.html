@@ -1,130 +1,123 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirect Now</title>
-</head>
-<body>
-  <main class="main-content">
-    <div class="top-cover u-padding-block-end-56">
-      <div
-        class="container u-flex-vertical u-cross-center"
-        style="max-width: 40rem"
-      >
-        <div class="u-flex u-main-center u-margin-block-start-16">
-          <h1 class="heading-level-1">Redirecting</h1>
-          <code class="u-un-break-text"></code>
-        </div>
-        <p class="body-text-1 u-normal u-margin-block-start-8 u-text-center">
-          You will be redirected automatically. <br />
-          If nothing happens, click the button below.
-        </p>
-        <a
-          id="manual"
-          class="button u-margin-block-start-16"
-          href="{{FALLBACK}}"
-          onclick="navigateFallback()"
-          >Open Link</a
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Redirecting...</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink" />
+    <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink-icons" />
+  </head>
+  <body>
+    <main class="main-content">
+      <div class="top-cover u-padding-block-end-56">
+        <div
+          class="container u-flex-vertical u-cross-center"
+          style="max-width: 40rem"
         >
+          <div class="u-flex u-main-center u-margin-block-start-16">
+            <h1 class="heading-level-1">Redirecting</h1>
+            <code class="u-un-break-text"></code>
+          </div>
+          <p class="body-text-1 u-normal u-margin-block-start-8 u-text-center">
+            You will be redirected automatically. <br />
+            If nothing happens, click the button below.
+          </p>
+          <a
+            id="manual"
+            class="button u-margin-block-start-16"
+            href="{{FALLBACK}}"
+            onclick="navigateFallback()"
+            >Open Link</a
+          >
+        </div>
       </div>
-    </div>
-  </main>
-    <!-- <script>
-        const getMobileOS = () => {
-            const ua = navigator.userAgent
-            if (/android/i.test(ua)) {
-                return "Android";
-            } else if (/iPad|iPhone|iPod/.test(ua)){
-                return "iOS";
-            }
-            return "Other";
-        }
+    </main>
 
-        function decrypt(text, key){
-            let texts = String(text);
-            console.log(texts);
-        return String.fromCharCode(...texts.match(/.{1,2}/g)
-            .map((e,i) => 
-            parseInt(e, 16) ^ key.charCodeAt(i % key.length) % 255)
-            )
-        }
-
-        let href = window.location.href;
-        let key = "Passphrase";
-        let url = new URL(href);
-        let splitParam = url.search.split("?").pop();
-
-        console.log(splitParam);
-        let originalParam = decrypt(splitParam, "Passphrase");
-        console.log(originalParam);
-
-        const os = getMobileOS();
-        if (os === "Android") {
-            setTimeout(() => {
-                window.location.href = "https://play.google.com/store/apps/details?id=com.tradersfamily.app&referrer=" + originalParam;
-            }, 25);
-            window.location.href = 'https://rizqy-tradersfamily.github.io?' + originalParam;
-        } else if (os === "iOS") {
-            setTimeout(() => {
-                window.location.href = "https://apps.apple.com/app/id1519985210?ct=tf_app&mt=8&pt=120054583";
-            }, 25);
-            window.location.href = 'https://rizqy-tradersfamily.github.io?' + originalParam;
-        } else {
-            // window.location.href = 'https://account.tradersfamily.id';
-        }
-    </script> -->
     <script>
-        const appName = "app";
-        const appPath = "channels/1";
-        const appPackage = "com.tradersfamily.app";
-        const fallback = "http://account.tradersfamily.id/";
-  
-        function navigateFallback() {
+
+      const href = window.location.href;
+      // const url = new URL(href);
+      const fallback = "http://account.tradersfamily.id/";
+      const directLink = "https://staging.tradersfamily.id/";
+      const decodedParam = decodeParam(href, "secureKey"); // Decrypt parameter nya agar bisa digunakan di deep link
+      const fallbackAndroid = `https://play.google.com/store/apps/details?id=com.tradersfamily.app&referrer=${decodedParam}`;
+      const fallbackIos = `itms-apps://itunes.apple.com/app/apple-store/id1519985210?mt=8`;
+
+      function navigateFallback() {
+        if (/Android/i.test(window.navigator.userAgent)) {
+          setTimeout(() => {
+            window.location.href = fallbackAndroid;
+          }, 500);
+        } else if (/iPhone|iPad|iPod/i.test(window.navigator.userAgent)) {
+          setTimeout(() => {
+            window.location.href = fallbackIos;
+          }, 500);
+        } else {
           setTimeout(() => {
             window.location.href = fallback;
           }, 500);
         }
-  
-        window.addEventListener("DOMContentLoaded", function () {
-          const manualAnchor = document.querySelector("#manual");
-  
-          if (/Android/i.test(window.navigator.userAgent)) {
-          //   let intentURL = `intent://${appPath}#Intent;scheme=${appName};package=${appPackage};action=android.intent.action.VIEW;category=android.intent.category.DEFAULT;category=android.intent.category.BROWSABLE;`;
-            let intentURL = `https://staging.tradersfamily.id/askap/deposit`;
-  
-          //   if (fallback) {
-          //     intentURL += `S.browser_fallback_url=${encodeURIComponent(
-          //       fallback
-          //     )}`;
-          //   }
-  
-          //   intentURL += ";end";
-  
-            manualAnchor.setAttribute("href", intentURL);
-            manualAnchor.textContent = intentURL;
-  
-            window.location.href = intentURL;
-            navigateFallback();
-  
-            return;
-          }
-  
-          if (/iPhone|iPad|iPod/i.test(window.navigator.userAgent)) {
-            const deepLink = `https://tradersfamily.link/${appPath}`;
-  
-            manualAnchor.setAttribute("href", deepLink);
-            manualAnchor.textContent = deepLink;
-  
-            window.location.href = deepLink;
-            navigateFallback();
-  
-            return;
-          }
-  
+      }
+
+      function encryptWithPassphrase(input, passphrase) {
+        let encrypted = '';
+        for (let i = 0; i < input.length; i++) {
+          const charCode =
+            input.charCodeAt(i) ^ passphrase.charCodeAt(i % passphrase.length);
+          encrypted += String.fromCharCode(charCode);
+        }
+        return encrypted;
+      }
+
+      function decryptWithPassphrase(encrypted, passphrase) {
+        return encryptWithPassphrase(encrypted, passphrase); // XOR is symmetric
+      }
+
+      function decodeParam(url, passphrase) {
+        let urls = new URL(url);
+        let urlsOrigin = urls.origin;
+        const encodedParam = urls.pathname.startsWith('/')
+          ? urls.pathname.slice(1)
+          : urls.pathname;;
+        const base64Encoded = encodedParam.replace(/-/g, '+').replace(/_/g, '/'); // Convert back to Base64
+        const encrypted = atob(base64Encoded); // Decode from Base64
+        const decrypted = decryptWithPassphrase(encrypted, passphrase); // Decrypt with passphrase
+        return decrypted;
+      }
+
+      window.addEventListener("DOMContentLoaded", function () {
+        const manualAnchor = document.querySelector("#manual");
+
+        if (/Android/i.test(window.navigator.userAgent)) {
+          let intentURL = `app://com.tradersfamily.app/${decodedParam}`;
+
+          manualAnchor.setAttribute("href", `${directLink}${decodedParam}`);
+          manualAnchor.textContent = `${directLink}${decodedParam}`;
+
+          window.location.href = intentURL;
+          navigateFallback();
+
           return;
-          window.location.href = fallback;
-        });
-      </script>
-</body>
+        }
+
+        if (/iPhone|iPad|iPod/i.test(window.navigator.userAgent)) {
+          const deepLink = `app://co.id.tradersfamily/${decodedParam}`;
+
+          manualAnchor.setAttribute("href", `${directLink}${decodedParam}`);
+          manualAnchor.textContent = `${directLink}${decodedParam}`;
+
+          window.location.href = deepLink;
+          navigateFallback();
+
+          return;
+        }
+
+        return;
+        window.location.href = fallback;
+      });
+    </script>
+  </body>
 </html>

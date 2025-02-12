@@ -26,28 +26,28 @@
         document.getElementById('myform').addEventListener('submit', function(e) {
             e.preventDefault();
             const param = document.getElementById('url').value;
-            function encrypt(text, key){
-                return [...text].map((x, i) => 
-                (x.codePointAt() ^ key.charCodeAt(i % key.length) % 255)
-                .toString(16)
-                .padStart(2,"0")
-            ).join('')
-            }
+            // function encrypt(text, key){
+            //     return [...text].map((x, i) => 
+            //     (x.codePointAt() ^ key.charCodeAt(i % key.length) % 255)
+            //     .toString(16)
+            //     .padStart(2,"0")
+            // ).join('')
+            // }
 
-            function decrypt(text, key){
-                let texts = String(text);
-                console.log(texts);
-            return String.fromCharCode(...texts.match(/.{1,2}/g)
-                .map((e,i) => 
-                parseInt(e, 16) ^ key.charCodeAt(i % key.length) % 255)
-                )
-            }
+            // function decrypt(text, key){
+            //     let texts = String(text);
+            //     console.log(texts);
+            // return String.fromCharCode(...texts.match(/.{1,2}/g)
+            //     .map((e,i) => 
+            //     parseInt(e, 16) ^ key.charCodeAt(i % key.length) % 255)
+            //     )
+            // }
     
-            let enc = encrypt(param, "Passphrase");
-            let dec = decrypt(enc, "Passphrase");
-            console.log(enc);
-            console.log(dec);
-            console.log(param);
+            // let enc = encrypt(param, "Passphrase");
+            // let dec = decrypt(enc, "Passphrase");
+            // console.log(enc);
+            // console.log(dec);
+            // console.log(param);
 
             let url = `https://deeptestingmore.netlify.app/redirects.html?${enc}`;
 
