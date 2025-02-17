@@ -144,13 +144,14 @@
           let intentURL = `${scheme}${packageAndroid}/${decodedParam}`;
 
           // Set direct link untuk di klik user
+          navigator.clipboard.writeText(intentURL);
           manualAnchor.setAttribute("href", fallbackAndroid); // Set button nya menjadi url fallback
           manualAnchor.textContent = "Open Link";
 
           // Buka app
-          window.location.href = intentURL;
-          // Kalau tidak di terbuka app nya jalanin fallback
-          navigateFallback();
+          // window.location.href = intentURL;
+          // // Kalau tidak di terbuka app nya jalanin fallback
+          // navigateFallback();
 
           return;
         }
@@ -159,9 +160,9 @@
           const deepLink = `${scheme}${packageIos}/${decodedParam}`;
 
           // Set direct link untuk di klik user
-          // manualAnchor.setAttribute("href", fallbackIos); // Set button nya menjadi url fallback
-          // manualAnchor.textContent = "Open Link";
-          navigator.clipboard.writeText("https://account.tradersfamily.id/channels/");
+          navigator.clipboard.writeText(deepLink);
+          manualAnchor.setAttribute("href", fallbackIos); // Set button nya menjadi url fallback
+          manualAnchor.textContent = "Open Link";
 
           window.location.href = deepLink;
           navigateFallback();
