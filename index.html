@@ -8,6 +8,7 @@
     <meta property="og:description" content="Default Description" />
     <meta property="og:image" content="default-image.png" />
     <meta property="og:url" content="https://example.com" />
+    <meta name="apple-itunes-app" content="app-id=id1519985210">
 
     <title>Redirecting...</title>
 
@@ -78,31 +79,6 @@
     </main>
 
     <script>
-
-const dynamicTitle = "Zay Trade";
-      const dynamicDescription = "Channels Signal Zay Trade";
-      const dynamicImage = "https://example.com/zay-trade-image.png";
-      const dynamicURL = "https://example.com/channels/122212";
-
-      // Fungsi untuk mengganti tag OpenGraph
-      function updateMetaTag(property, content) {
-        let metaTag = document.querySelector(`meta[property="${property}"]`);
-        if (metaTag) {
-          metaTag.setAttribute("content", content);
-        } else {
-          // Jika tidak ada meta tag, buat yang baru
-          metaTag = document.createElement("meta");
-          metaTag.setAttribute("property", property);
-          metaTag.setAttribute("content", content);
-          document.head.appendChild(metaTag);
-        }
-      }
-
-      // Update meta OpenGraph secara dinamis
-      updateMetaTag("og:title", dynamicTitle);
-      updateMetaTag("og:description", dynamicDescription);
-      updateMetaTag("og:image", dynamicImage);
-      updateMetaTag("og:url", dynamicURL);
       const href = window.location.href;
       // const url = new URL(href);
       const passphrase = "secureKey";
@@ -114,91 +90,91 @@ const dynamicTitle = "Zay Trade";
       const packageAndroid = "com.tradersfamily.app";
       const packageIos = "co.id.tradersfamily"
 
-      // function navigateFallback() {
-      //   if (/Android/i.test(window.navigator.userAgent)) {
-      //     setTimeout(() => {
-      //       window.location.href = fallbackAndroid;
-      //     }, 2000);
-      //   } else if (/iPhone|iPad|iPod/i.test(window.navigator.userAgent)) {
-      //     setTimeout(() => {
-      //       window.location.href = fallbackIos;
-      //     }, 2000);
-      //   } else {
-      //     setTimeout(() => {
-      //       window.location.href = fallback;
-      //     }, 2000);
-      //   }
-      // }
+      function navigateFallback() {
+        if (/Android/i.test(window.navigator.userAgent)) {
+          setTimeout(() => {
+            window.location.href = fallbackAndroid;
+          }, 2000);
+        } else if (/iPhone|iPad|iPod/i.test(window.navigator.userAgent)) {
+          setTimeout(() => {
+            window.location.href = fallbackIos;
+          }, 2000);
+        } else {
+          setTimeout(() => {
+            window.location.href = fallback;
+          }, 2000);
+        }
+      }
 
-      // // Start fungsi decrypt
-      // function encryptWithPassphrase(input, passphrase) {
-      //   let encrypted = '';
-      //   for (let i = 0; i < input.length; i++) {
-      //     const charCode =
-      //       input.charCodeAt(i) ^ passphrase.charCodeAt(i % passphrase.length);
-      //     encrypted += String.fromCharCode(charCode);
-      //   }
-      //   return encrypted;
-      // }
+      // Start fungsi decrypt
+      function encryptWithPassphrase(input, passphrase) {
+        let encrypted = '';
+        for (let i = 0; i < input.length; i++) {
+          const charCode =
+            input.charCodeAt(i) ^ passphrase.charCodeAt(i % passphrase.length);
+          encrypted += String.fromCharCode(charCode);
+        }
+        return encrypted;
+      }
 
-      // function decryptWithPassphrase(encrypted, passphrase) {
-      //   return encryptWithPassphrase(encrypted, passphrase); // XOR is symmetric
-      // }
+      function decryptWithPassphrase(encrypted, passphrase) {
+        return encryptWithPassphrase(encrypted, passphrase); // XOR is symmetric
+      }
 
-      // function decodeParam(url, passphrase) {
-      //   let urls = new URL(url);
-      //   let urlsOrigin = urls.origin;
-      //   const encodedParam = urls.pathname.startsWith('/')
-      //     ? urls.pathname.slice(1)
-      //     : "";
-      //   if (encodedParam == "" || encodedParam == "index.html") {
-      //     return "";
-      //   }
-      //   const base64Encoded = encodedParam.replace(/-/g, '+').replace(/_/g, '/'); // Convert back to Base64
-      //   const encrypted = atob(base64Encoded); // Decode from Base64
-      //   const decrypted = decryptWithPassphrase(encrypted, passphrase); // Decrypt with passphrase
-      //   return decrypted;
-      // }
-      // // End fungsi decrypt
+      function decodeParam(url, passphrase) {
+        let urls = new URL(url);
+        let urlsOrigin = urls.origin;
+        const encodedParam = urls.pathname.startsWith('/')
+          ? urls.pathname.slice(1)
+          : "";
+        if (encodedParam == "" || encodedParam == "index.html") {
+          return "";
+        }
+        const base64Encoded = encodedParam.replace(/-/g, '+').replace(/_/g, '/'); // Convert back to Base64
+        const encrypted = atob(base64Encoded); // Decode from Base64
+        const decrypted = decryptWithPassphrase(encrypted, passphrase); // Decrypt with passphrase
+        return decrypted;
+      }
+      // End fungsi decrypt
 
-      // window.addEventListener("DOMContentLoaded", function () {
-      //   const manualAnchor = document.querySelector("#manual");
+      window.addEventListener("DOMContentLoaded", function () {
+        const manualAnchor = document.querySelector("#manual");
 
-      //   if (/Android/i.test(window.navigator.userAgent)) {
-      //     let intentURL = `${scheme}${packageAndroid}/${decodedParam}`;
+        if (/Android/i.test(window.navigator.userAgent)) {
+          let intentURL = `${scheme}${packageAndroid}/${decodedParam}`;
 
-      //     // Set direct link untuk di klik user
-      //     manualAnchor.setAttribute("href", fallbackAndroid); // Set button nya menjadi url fallback
-      //     manualAnchor.textContent = "Open Link";
+          // Set direct link untuk di klik user
+          manualAnchor.setAttribute("href", fallbackAndroid); // Set button nya menjadi url fallback
+          manualAnchor.textContent = "Open Link";
 
-      //     // Buka app
-      //     window.location.href = intentURL;
-      //     // Kalau tidak di terbuka app nya jalanin fallback
-      //     navigateFallback();
+          // Buka app
+          window.location.href = intentURL;
+          // Kalau tidak di terbuka app nya jalanin fallback
+          navigateFallback();
 
-      //     return;
-      //   }
+          return;
+        }
 
-      //   if (/iPhone|iPad|iPod/i.test(window.navigator.userAgent)) {
-      //     const deepLink = `${scheme}${packageIos}/${decodedParam}`;
+        if (/iPhone|iPad|iPod/i.test(window.navigator.userAgent)) {
+          const deepLink = `${scheme}${packageIos}/${decodedParam}`;
 
-      //     // Set direct link untuk di klik user
-      //     manualAnchor.setAttribute("href", fallbackIos); // Set button nya menjadi url fallback
-      //     manualAnchor.textContent = "Open Link";
+          // Set direct link untuk di klik user
+          // manualAnchor.setAttribute("href", fallbackIos); // Set button nya menjadi url fallback
+          // manualAnchor.textContent = "Open Link";
+          navigator.clipboard.writeText("https://account.tradersfamily.id/channels/");
+
+          window.location.href = deepLink;
+          navigateFallback();
+
+          return;
+        }
 
 
-      //     window.location.href = deepLink;
-      //     navigateFallback();
+        manualAnchor.setAttribute("href", fallback); // Set button nya menjadi url fallback
+        manualAnchor.textContent = "Open Link";
 
-      //     return;
-      //   }
-
-
-      //   manualAnchor.setAttribute("href", fallback); // Set button nya menjadi url fallback
-      //   manualAnchor.textContent = "Open Link";
-
-      //   navigateFallback();
-      // });
+        navigateFallback();
+      });
     </script>
   </body>
 </html>
