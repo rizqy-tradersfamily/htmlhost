@@ -80,7 +80,7 @@
       const decodedParam = decodeParam(href, passphrase); // Decrypt parameter nya agar bisa digunakan di deep link
       const fallbackAndroid = decodedParam == "" ? `https://play.google.com/store/apps/details?id=com.tradersfamily.app&` : `https://play.google.com/store/apps/details?id=com.tradersfamily.app&referrer=${decodedParam}`  ;
       const fallbackIos = `itms-apps://itunes.apple.com/app/apple-store/id1519985210?mt=8`;
-      const fallback = decodedParam == "" ? `http://account.tradersfamily.id` : `http://account.tradersfamily.id${decodedParam}`;
+      const fallback = decodedParam == "" ? `http://account.tradersfamily.id` : `http://account.tradersfamily.id/${decodedParam}`;
       const scheme = "app://";
       const packageAndroid = "com.tradersfamily.app";
       const packageIos = "co.id.tradersfamily"
@@ -136,7 +136,7 @@
         const manualAnchor = document.querySelector("#manual");
 
         if (/Android/i.test(window.navigator.userAgent)) {
-          let intentURL = `${scheme}${packageAndroid}${decodedParam}`;
+          let intentURL = `${scheme}${packageAndroid}/${decodedParam}`;
 
           // Set direct link untuk di klik user
           manualAnchor.setAttribute("href", fallbackAndroid); // Set button nya menjadi url fallback
@@ -151,7 +151,7 @@
         }
 
         if (/iPhone|iPad|iPod/i.test(window.navigator.userAgent)) {
-          const deepLink = `${scheme}${packageIos}${decodedParam}`;
+          const deepLink = `${scheme}${packageIos}/${decodedParam}`;
 
           // Set direct link untuk di klik user
           manualAnchor.setAttribute("href", fallbackIos); // Set button nya menjadi url fallback
