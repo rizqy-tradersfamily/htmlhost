@@ -114,91 +114,91 @@ const dynamicTitle = "Zay Trade";
       const packageAndroid = "com.tradersfamily.app";
       const packageIos = "co.id.tradersfamily"
 
-      function navigateFallback() {
-        if (/Android/i.test(window.navigator.userAgent)) {
-          setTimeout(() => {
-            window.location.href = fallbackAndroid;
-          }, 2000);
-        } else if (/iPhone|iPad|iPod/i.test(window.navigator.userAgent)) {
-          setTimeout(() => {
-            window.location.href = fallbackIos;
-          }, 2000);
-        } else {
-          setTimeout(() => {
-            window.location.href = fallback;
-          }, 2000);
-        }
-      }
+      // function navigateFallback() {
+      //   if (/Android/i.test(window.navigator.userAgent)) {
+      //     setTimeout(() => {
+      //       window.location.href = fallbackAndroid;
+      //     }, 2000);
+      //   } else if (/iPhone|iPad|iPod/i.test(window.navigator.userAgent)) {
+      //     setTimeout(() => {
+      //       window.location.href = fallbackIos;
+      //     }, 2000);
+      //   } else {
+      //     setTimeout(() => {
+      //       window.location.href = fallback;
+      //     }, 2000);
+      //   }
+      // }
 
-      // Start fungsi decrypt
-      function encryptWithPassphrase(input, passphrase) {
-        let encrypted = '';
-        for (let i = 0; i < input.length; i++) {
-          const charCode =
-            input.charCodeAt(i) ^ passphrase.charCodeAt(i % passphrase.length);
-          encrypted += String.fromCharCode(charCode);
-        }
-        return encrypted;
-      }
+      // // Start fungsi decrypt
+      // function encryptWithPassphrase(input, passphrase) {
+      //   let encrypted = '';
+      //   for (let i = 0; i < input.length; i++) {
+      //     const charCode =
+      //       input.charCodeAt(i) ^ passphrase.charCodeAt(i % passphrase.length);
+      //     encrypted += String.fromCharCode(charCode);
+      //   }
+      //   return encrypted;
+      // }
 
-      function decryptWithPassphrase(encrypted, passphrase) {
-        return encryptWithPassphrase(encrypted, passphrase); // XOR is symmetric
-      }
+      // function decryptWithPassphrase(encrypted, passphrase) {
+      //   return encryptWithPassphrase(encrypted, passphrase); // XOR is symmetric
+      // }
 
-      function decodeParam(url, passphrase) {
-        let urls = new URL(url);
-        let urlsOrigin = urls.origin;
-        const encodedParam = urls.pathname.startsWith('/')
-          ? urls.pathname.slice(1)
-          : "";
-        if (encodedParam == "" || encodedParam == "index.html") {
-          return "";
-        }
-        const base64Encoded = encodedParam.replace(/-/g, '+').replace(/_/g, '/'); // Convert back to Base64
-        const encrypted = atob(base64Encoded); // Decode from Base64
-        const decrypted = decryptWithPassphrase(encrypted, passphrase); // Decrypt with passphrase
-        return decrypted;
-      }
-      // End fungsi decrypt
+      // function decodeParam(url, passphrase) {
+      //   let urls = new URL(url);
+      //   let urlsOrigin = urls.origin;
+      //   const encodedParam = urls.pathname.startsWith('/')
+      //     ? urls.pathname.slice(1)
+      //     : "";
+      //   if (encodedParam == "" || encodedParam == "index.html") {
+      //     return "";
+      //   }
+      //   const base64Encoded = encodedParam.replace(/-/g, '+').replace(/_/g, '/'); // Convert back to Base64
+      //   const encrypted = atob(base64Encoded); // Decode from Base64
+      //   const decrypted = decryptWithPassphrase(encrypted, passphrase); // Decrypt with passphrase
+      //   return decrypted;
+      // }
+      // // End fungsi decrypt
 
-      window.addEventListener("DOMContentLoaded", function () {
-        const manualAnchor = document.querySelector("#manual");
+      // window.addEventListener("DOMContentLoaded", function () {
+      //   const manualAnchor = document.querySelector("#manual");
 
-        if (/Android/i.test(window.navigator.userAgent)) {
-          let intentURL = `${scheme}${packageAndroid}/${decodedParam}`;
+      //   if (/Android/i.test(window.navigator.userAgent)) {
+      //     let intentURL = `${scheme}${packageAndroid}/${decodedParam}`;
 
-          // Set direct link untuk di klik user
-          manualAnchor.setAttribute("href", fallbackAndroid); // Set button nya menjadi url fallback
-          manualAnchor.textContent = "Open Link";
+      //     // Set direct link untuk di klik user
+      //     manualAnchor.setAttribute("href", fallbackAndroid); // Set button nya menjadi url fallback
+      //     manualAnchor.textContent = "Open Link";
 
-          // Buka app
-          window.location.href = intentURL;
-          // Kalau tidak di terbuka app nya jalanin fallback
-          navigateFallback();
+      //     // Buka app
+      //     window.location.href = intentURL;
+      //     // Kalau tidak di terbuka app nya jalanin fallback
+      //     navigateFallback();
 
-          return;
-        }
+      //     return;
+      //   }
 
-        if (/iPhone|iPad|iPod/i.test(window.navigator.userAgent)) {
-          const deepLink = `${scheme}${packageIos}/${decodedParam}`;
+      //   if (/iPhone|iPad|iPod/i.test(window.navigator.userAgent)) {
+      //     const deepLink = `${scheme}${packageIos}/${decodedParam}`;
 
-          // Set direct link untuk di klik user
-          manualAnchor.setAttribute("href", fallbackIos); // Set button nya menjadi url fallback
-          manualAnchor.textContent = "Open Link";
-
-
-          window.location.href = deepLink;
-          navigateFallback();
-
-          return;
-        }
+      //     // Set direct link untuk di klik user
+      //     manualAnchor.setAttribute("href", fallbackIos); // Set button nya menjadi url fallback
+      //     manualAnchor.textContent = "Open Link";
 
 
-        manualAnchor.setAttribute("href", fallback); // Set button nya menjadi url fallback
-        manualAnchor.textContent = "Open Link";
+      //     window.location.href = deepLink;
+      //     navigateFallback();
 
-        navigateFallback();
-      });
+      //     return;
+      //   }
+
+
+      //   manualAnchor.setAttribute("href", fallback); // Set button nya menjadi url fallback
+      //   manualAnchor.textContent = "Open Link";
+
+      //   navigateFallback();
+      // });
     </script>
   </body>
 </html>
