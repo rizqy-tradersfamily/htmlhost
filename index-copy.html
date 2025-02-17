@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Deep Link</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-sky-100 flex items-center justify-center min-h-screen">
+
+    <div class="bg-white p-8 rounded-lg shadow-md w-96">
+        <h2 class="text-2xl font-bold mb-6 text-center">Generate Deep Link</h2>
+        <form id="myform">
+            <div class="mb-4">
+                <label class="block text-gray-700" for="name">URL</label>
+                <input class="mt-1 block w-full p-2 border border-gray-300 rounded" type="text" id="url" placeholder="Masukan url buat di generate" required>
+            </div>
+            <input class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600" type="submit" id="submit">
+        </form>
+
+        <div id="result" class="mt-4 text-center text-gray-700">
+
+        </div>
+    </div>
+    <script>
+        document.getElementById('myform').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const param = document.getElementById('url').value;
+            function shortenUrl(originalUrl, passphrase) {
+                const url = new URL(originalUrl);
+                const urlOnly = url.origin;
+                let splitParam = url.search.split("?").pop();
+                const param = url.pathname.startsWith('/')
+                    ? url.pathname.slice(1)
+                    : url.pathname;
+                console.log(param);
+                const encodedParam = encodeParam(splitParam, passphrase);
+                return "https://deeptestingmore.netlify.app/redirects.html?" + encodedParam;
+            }
+
+            function encodeParam(param, passphrase) {
+                const encrypted = encryptWithPassphrase(param, passphrase); // Encrypt with passphrase
+                const base64Encoded = btoa(encrypted); // Convert to Base64
+                return base64Encoded
+                    .replace(/\+/g, '-')
+                    .replace(/\//g, '_')
+                    .replace(/=+$/, ''); // Make URL-safe
+                }
+
+                function encryptWithPassphrase(input, passphrase) {
+                let encrypted = '';
+                for (let i = 0; i < input.length; i++) {
+                    const charCode =
+                    input.charCodeAt(i) ^ passphrase.charCodeAt(i % passphrase.length);
+                    encrypted += String.fromCharCode(charCode);
+                }
+                return encrypted;
+                }
+
+            let url = shortenUrl(`https://deeptestingmore.netlify.app/redirects.html?${param}`, "secureKey");
+
+            const resultDiv = document.getElementById('result');
+
+            resultDiv.innerHTML = `
+                <p class="text-black-500">Generated Link:</p>
+                <a href="${url}" class="text-blue-500 underline">${url}</a>
+            `;
+        });
+
+    </script>
+</body>
+</html>

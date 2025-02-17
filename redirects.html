@@ -7,47 +7,83 @@
 
     <title>Redirecting...</title>
 
-    <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink" />
-    <link rel="stylesheet" href="https://unpkg.com/@appwrite.io/pink-icons" />
+    <style>
+      :root {
+        --color-darkGreenTF: #012921;
+        --color-primaryGreenTF: #00B451;
+      }
+
+      body {
+        background-color: var(--color-darkGreenTF);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+      }
+
+      .main-content {
+        text-align: center;
+        color: white;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+      }
+
+      p {
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+      }
+
+      a {
+        display: inline-block;
+        background-color: var(--color-primaryGreenTF);
+        color: white;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+      }
+
+      a:hover {
+        background-color: #0e5442;
+      }
+      
+
+    </style>
   </head>
-  <body>
+  <body class="bg-darkGreenTF flex items-center justify-center min-h-screen">
     <main class="main-content">
-      <div class="top-cover u-padding-block-end-56">
-        <div
-          class="container u-flex-vertical u-cross-center"
-          style="max-width: 40rem"
+      <h1>Redirecting...</h1>
+      <p>
+        You will be redirected automatically. <br />
+        If nothing happens, click the button below.
+      </p>
+        <a
+          id="manual"
+          href="{{FALLBACK}}"
+          onclick="navigateFallback()"
         >
-          <div class="u-flex u-main-center u-margin-block-start-16">
-            <h1 class="heading-level-1">Redirecting</h1>
-            <code class="u-un-break-text"></code>
-          </div>
-          <p class="body-text-1 u-normal u-margin-block-start-8 u-text-center">
-            You will be redirected automatically. <br />
-            If nothing happens, click the button below.
-          </p>
-          <a
-            id="manual"
-            class="button u-margin-block-start-16"
-            href="{{FALLBACK}}"
-            onclick="navigateFallback()"
-            >Open Link</a
-          >
-        </div>
-      </div>
+          Open Link
+        </a>
     </main>
 
     <script>
-
       const href = window.location.href;
       // const url = new URL(href);
-      const fallback = "http://account.tradersfamily.id/";
-      const directLink = "https://staging.tradersfamily.id/";
       const passphrase = "secureKey";
       const decodedParam = decodeParam(href, passphrase); // Decrypt parameter nya agar bisa digunakan di deep link
       const fallbackAndroid = `https://play.google.com/store/apps/details?id=com.tradersfamily.app&referrer=${decodedParam}`;
       const fallbackIos = `itms-apps://itunes.apple.com/app/apple-store/id1519985210?mt=8`;
-
-      console.log(decodedParam)
+      const fallback = `http://account.tradersfamily.id/${decodedParam}`;
+      const scheme = "app://";
+      const packageAndroid = "com.tradersfamily.app";
+      const packageIos = "co.id.tradersfamily"
 
       function navigateFallback() {
         if (/Android/i.test(window.navigator.userAgent)) {
@@ -65,6 +101,7 @@
         }
       }
 
+      // Start fungsi decrypt
       function encryptWithPassphrase(input, passphrase) {
         let encrypted = '';
         for (let i = 0; i < input.length; i++) {
@@ -82,38 +119,41 @@
       function decodeParam(url, passphrase) {
         let urls = new URL(url);
         let urlsOrigin = urls.origin;
-        let splitParam = urls.search.split("?").pop();
         const encodedParam = urls.pathname.startsWith('/')
           ? urls.pathname.slice(1)
           : urls.pathname;
-        console.log(splitParam);
-        const base64Encoded = splitParam.replace(/-/g, '+').replace(/_/g, '/'); // Convert back to Base64
+        const base64Encoded = encodedParam.replace(/-/g, '+').replace(/_/g, '/'); // Convert back to Base64
         const encrypted = atob(base64Encoded); // Decode from Base64
         const decrypted = decryptWithPassphrase(encrypted, passphrase); // Decrypt with passphrase
-        console.log(decrypted);
         return decrypted;
       }
+      // End fungsi decrypt
 
       window.addEventListener("DOMContentLoaded", function () {
         const manualAnchor = document.querySelector("#manual");
 
         if (/Android/i.test(window.navigator.userAgent)) {
-          let intentURL = `app://com.tradersfamily.app/${decodedParam}`;
+          let intentURL = `${scheme}${packageAndroid}/${decodedParam}`;
 
-          manualAnchor.setAttribute("href", `${directLink}${decodedParam}`);
-          manualAnchor.textContent = `${directLink}${decodedParam}`;
+          // Set direct link untuk di klik user
+          manualAnchor.setAttribute("href", fallbackAndroid); // Set button nya menjadi url fallback
+          manualAnchor.textContent = "Open Link";
 
+          // Buka app
           window.location.href = intentURL;
+          // Kalau tidak di terbuka app nya jalanin fallback
           navigateFallback();
 
           return;
         }
 
         if (/iPhone|iPad|iPod/i.test(window.navigator.userAgent)) {
-          const deepLink = `app://co.id.tradersfamily/${decodedParam}`;
+          const deepLink = `${scheme}${packageIos}/${decodedParam}`;
 
-          manualAnchor.setAttribute("href", `${directLink}${decodedParam}`);
-          manualAnchor.textContent = `${directLink}${decodedParam}`;
+          // Set direct link untuk di klik user
+          manualAnchor.setAttribute("href", fallbackIos); // Set button nya menjadi url fallback
+          manualAnchor.textContent = "Open Link";
+
 
           window.location.href = deepLink;
           navigateFallback();

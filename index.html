@@ -1,72 +1,175 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generate Deep Link</title>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-</head>
-<body class="bg-sky-100 flex items-center justify-center min-h-screen">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <div class="bg-white p-8 rounded-lg shadow-md w-96">
-        <h2 class="text-2xl font-bold mb-6 text-center">Generate Deep Link</h2>
-        <form id="myform">
-            <div class="mb-4">
-                <label class="block text-gray-700" for="name">URL</label>
-                <input class="mt-1 block w-full p-2 border border-gray-300 rounded" type="text" id="url" placeholder="Masukan url buat di generate" required>
-            </div>
-            <input class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600" type="submit" id="submit">
-        </form>
+    <title>Redirecting...</title>
 
-        <div id="result" class="mt-4 text-center text-gray-700">
+    <style>
+      :root {
+        --color-darkGreenTF: #012921;
+        --color-primaryGreenTF: #00B451;
+      }
 
-        </div>
-    </div>
+      body {
+        background-color: var(--color-darkGreenTF);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+      }
+
+      .main-content {
+        text-align: center;
+        color: white;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+      }
+
+      p {
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+      }
+
+      a {
+        display: inline-block;
+        background-color: var(--color-primaryGreenTF);
+        color: white;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+      }
+
+      a:hover {
+        background-color: #0e5442;
+      }
+      
+
+    </style>
+  </head>
+  <body class="bg-darkGreenTF flex items-center justify-center min-h-screen">
+    <main class="main-content">
+      <h1>Redirecting...</h1>
+      <p>
+        You will be redirected automatically. <br />
+        If nothing happens, click the button below.
+      </p>
+        <a
+          id="manual"
+          href="{{FALLBACK}}"
+          onclick="navigateFallback()"
+        >
+          Open Link
+        </a>
+    </main>
+
     <script>
-        document.getElementById('myform').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const param = document.getElementById('url').value;
-            function shortenUrl(originalUrl, passphrase) {
-                const url = new URL(originalUrl);
-                const urlOnly = url.origin;
-                let splitParam = url.search.split("?").pop();
-                const param = url.pathname.startsWith('/')
-                    ? url.pathname.slice(1)
-                    : url.pathname;
-                console.log(param);
-                const encodedParam = encodeParam(splitParam, passphrase);
-                return "https://deeptestingmore.netlify.app/redirects.html?" + encodedParam;
-            }
+      const href = window.location.href;
+      // const url = new URL(href);
+      const passphrase = "secureKey";
+      const decodedParam = decodeParam(href, passphrase); // Decrypt parameter nya agar bisa digunakan di deep link
+      const fallbackAndroid = decodedParam == "" ? `https://play.google.com/store/apps/details?id=com.tradersfamily.app&` : `https://play.google.com/store/apps/details?id=com.tradersfamily.app&referrer=${decodedParam}`  ;
+      const fallbackIos = `itms-apps://itunes.apple.com/app/apple-store/id1519985210?mt=8`;
+      const fallback = decodedParam == "" ? `http://account.tradersfamily.id` : `http://account.tradersfamily.id${decodedParam}`;
+      const scheme = "app://";
+      const packageAndroid = "com.tradersfamily.app";
+      const packageIos = "co.id.tradersfamily"
 
-            function encodeParam(param, passphrase) {
-                const encrypted = encryptWithPassphrase(param, passphrase); // Encrypt with passphrase
-                const base64Encoded = btoa(encrypted); // Convert to Base64
-                return base64Encoded
-                    .replace(/\+/g, '-')
-                    .replace(/\//g, '_')
-                    .replace(/=+$/, ''); // Make URL-safe
-                }
+      function navigateFallback() {
+        if (/Android/i.test(window.navigator.userAgent)) {
+          setTimeout(() => {
+            window.location.href = fallbackAndroid;
+          }, 2000);
+        } else if (/iPhone|iPad|iPod/i.test(window.navigator.userAgent)) {
+          setTimeout(() => {
+            window.location.href = fallbackIos;
+          }, 2000);
+        } else {
+          setTimeout(() => {
+            window.location.href = fallback;
+          }, 2000);
+        }
+      }
 
-                function encryptWithPassphrase(input, passphrase) {
-                let encrypted = '';
-                for (let i = 0; i < input.length; i++) {
-                    const charCode =
-                    input.charCodeAt(i) ^ passphrase.charCodeAt(i % passphrase.length);
-                    encrypted += String.fromCharCode(charCode);
-                }
-                return encrypted;
-                }
+      // Start fungsi decrypt
+      function encryptWithPassphrase(input, passphrase) {
+        let encrypted = '';
+        for (let i = 0; i < input.length; i++) {
+          const charCode =
+            input.charCodeAt(i) ^ passphrase.charCodeAt(i % passphrase.length);
+          encrypted += String.fromCharCode(charCode);
+        }
+        return encrypted;
+      }
 
-            let url = shortenUrl(`https://deeptestingmore.netlify.app/redirects.html?${param}`, "secureKey");
+      function decryptWithPassphrase(encrypted, passphrase) {
+        return encryptWithPassphrase(encrypted, passphrase); // XOR is symmetric
+      }
 
-            const resultDiv = document.getElementById('result');
+      function decodeParam(url, passphrase) {
+        let urls = new URL(url);
+        let urlsOrigin = urls.origin;
+        const encodedParam = urls.pathname.startsWith('/')
+          ? urls.pathname.slice(1)
+          : "";
+        if (encodedParam == "" || encodedParam == "index.html") {
+          return "";
+        }
+        const base64Encoded = encodedParam.replace(/-/g, '+').replace(/_/g, '/'); // Convert back to Base64
+        const encrypted = atob(base64Encoded); // Decode from Base64
+        const decrypted = decryptWithPassphrase(encrypted, passphrase); // Decrypt with passphrase
+        return decrypted;
+      }
+      // End fungsi decrypt
 
-            resultDiv.innerHTML = `
-                <p class="text-black-500">Generated Link:</p>
-                <a href="${url}" class="text-blue-500 underline">${url}</a>
-            `;
-        });
+      window.addEventListener("DOMContentLoaded", function () {
+        const manualAnchor = document.querySelector("#manual");
 
+        if (/Android/i.test(window.navigator.userAgent)) {
+          let intentURL = `${scheme}${packageAndroid}${decodedParam}`;
+
+          // Set direct link untuk di klik user
+          manualAnchor.setAttribute("href", fallbackAndroid); // Set button nya menjadi url fallback
+          manualAnchor.textContent = "Open Link";
+
+          // Buka app
+          window.location.href = intentURL;
+          // Kalau tidak di terbuka app nya jalanin fallback
+          navigateFallback();
+
+          return;
+        }
+
+        if (/iPhone|iPad|iPod/i.test(window.navigator.userAgent)) {
+          const deepLink = `${scheme}${packageIos}${decodedParam}`;
+
+          // Set direct link untuk di klik user
+          manualAnchor.setAttribute("href", fallbackIos); // Set button nya menjadi url fallback
+          manualAnchor.textContent = "Open Link";
+
+
+          window.location.href = deepLink;
+          navigateFallback();
+
+          return;
+        }
+
+
+        manualAnchor.setAttribute("href", fallback); // Set button nya menjadi url fallback
+        manualAnchor.textContent = "Open Link";
+
+        navigateFallback();
+      });
     </script>
-</body>
+  </body>
 </html>
